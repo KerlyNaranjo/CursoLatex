@@ -1,0 +1,96 @@
+\documentclass[a4paper, 12pt]{article}
+
+% Paquetes
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nolayout,es-nodecimaldot,es-tabla]{babel}
+\usepackage[left=2.5cm,right=2.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{amsmath, amssymb, amsfonts, latexsym, amsthm}
+\usepackage{listings}
+
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[colorlinks = true]{hyperref}
+
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{nicefrac}
+\usepackage{upgreek}
+\usepackage{cases}
+
+%
+\newtheorem{teo}{Teorema}
+
+% Comandos
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\yds}{\qquad\text{y}\qquad}
+\DeclareMathOperator{\proy}{proy}
+\DeclareMathOperator{\dd}{d}
+
+%--------------------------------------------------------
+%       Datos informativos
+%--------------------------------------------------------
+\parindent = 0mm
+\author{Kerly Naranjo \\ E-mail \href{mailto:kerly.naranjo@epn.edu.ec}{kerly.naranjo@epn.edu.ec}}
+\title{MÉTODO DE NEWTON-RAPHSON}
+\date{\today}
+
+% Contenido
+\begin{document}
+	\maketitle
+
+
+\section*{Introducción}
+El método de Newton-Raphson es un método iterativo que nos permite
+aproximar la solución de una ecuación del tipo \(f(x)=0\). Partimos de una estimación inicial de la solución \(x0\) y construimos una sucesión de aproximaciones de forma recurrente mediante la fórmula
+\[ x_{j+1} = x_j-\dfrac{f(x_j)}{f^1(x_j)} \]
+Por ejemplo, consideremos la ecuación
+\[e^x=\dfrac{1}{x}\]
+En este caso es imposible despejar la incógnita, no obstante, si representamos las curvas \(y = ex\), \(y = 1/x\) en el intervalo \(x \in [0, 4]\), es evidente que la ecuación tiene una solución en este intervalo.
+
+Para aplicar el método de Newton-Raphson, seguimos los siguientes pasos:
+\begin{enumerate}
+	 \item Expresamos la ecuación en la forma \(f(x)=0\), e identificamos la función \(f\). En el ejemplo es
+	 \[f(x)=e^x-\dfrac{1}{x}\]
+	 \item Calculamos la derivada
+	 \[f'(x)=e^x+\dfrac{1}{x^2}\]
+	 \item Construimos la fórmula de recurrencia
+	 \[x_{j+1}=x_j-\dfrac{e^x_j-\dfrac{1}{x_j}}{e^x_j+\dfrac{1}{x^{2}_{j}}}\]
+	 \item Tomamos una estimación inicial de la solución. En este caso podemos tomar por ejemplo \(x_0 = 1.0\), y calculamos las siguientes aproximaciones. Desde el punto de vista práctico, si deseamos aproximar la solución con 6 decimales, podemos detener los cálculos cuando dos aproximaciones consecutivas coincidan hasta el decimal 8. En nuestro caso, obtendríamos
+	 \begin{align}
+	 	x_0 &= 1.0, \nonumber \\
+	 	x_1 &= 1-\dfrac{e^1-\dfrac{1}{1}}{e^1+\dfrac{1}{1^2}}=0.53788284, \nonumber \\
+	 	x_2 &= x_1-\dfrac{e^x_1-\dfrac{1}{x_1}}{e^x_1+\dfrac{1}{x^{2}_{1}}} = 0.56627701, \nonumber \\
+	 	x_3 &= 0.56714258, \nonumber \\
+	 	x_4 &= 0,56714329, \nonumber \\
+	 	x_5 &= 0,56714329. \nonumber
+	 \end{align}
+	\item Podemos, entonces, tomar como solución \(x = 0.567143\).
+\end{enumerate}
+
+\section*{CÓDIGO DE IMPLEMENTACIÓN}
+\textbf{Java NetBeans}
+\begin{lstlisting}
+	/*----------MET. NEWTON RAPHSON---------*/
+    public double NewtonRaphson(float x1, double eps, double mxIt){
+        float x2;
+        for (int k = 1; k <= mxIt; k++) {
+            x2 = (float) (x1 - (SP(x1)/DerivadaK(x1, 1)));
+            
+            if(SP(x2)<=eps){
+                return x2;
+            }else{
+                x1 = x2;
+            }
+        }
+        return 99999999;
+    }
+\end{lstlisting}
+
+%Referencias
+\bibliographystyle{plain}
+\bibliography{ref}
+
+\end{document}
